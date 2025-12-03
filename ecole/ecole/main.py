@@ -28,11 +28,12 @@ Bienvenue dans notre école
     print(school.get_course_by_id(5))
     print(school.get_course_by_id(9))
 
+    # affichage de la liste complète des cours
     courses = school.get_all_courses()
-    
     for course in courses:
         print(course)
 
+    school.delete_course(courses[8])
 
 if __name__ == '__main__':
     main()

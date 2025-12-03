@@ -215,7 +215,7 @@ ALTER TABLE `student`
 --
 ALTER TABLE `takes`
   ADD CONSTRAINT `takes_ibfk_1` FOREIGN KEY (`student_nbr`) REFERENCES `student` (`student_nbr`),
-  ADD CONSTRAINT `takes_ibfk_2` FOREIGN KEY (`id_course`) REFERENCES `course` (`id_course`);
+  ADD CONSTRAINT `takes_ibfk_2` FOREIGN KEY (`id_course`) REFERENCES `course` (`id_course`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `teacher`

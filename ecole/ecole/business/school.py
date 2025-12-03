@@ -6,6 +6,7 @@ Classe School
 
 from dataclasses import dataclass, field
 from datetime import date
+from typing import Optional
 
 from daos.course_dao import CourseDao
 from models.address import Address
@@ -49,7 +50,7 @@ class School:
             print()
 
     @staticmethod
-    def get_course_by_id(id_course: int):
+    def get_course_by_id(id_course: int) -> Optional[Course]:
         course_dao: CourseDao = CourseDao()
         return course_dao.read(id_course)
 
@@ -57,6 +58,15 @@ class School:
     def get_all_courses() -> list[Course]:
         course_dao: CourseDao = CourseDao()
         return course_dao.read_all()
+
+    @staticmethod
+    def delete_course(course: Course) -> None:
+        course_dao: CourseDao = CourseDao()
+        is_delete = course_dao.delete(course)
+        if is_delete:
+            print(f"Cours {course.id} supprimé")
+        else:
+            print("Erreur lors de la suppression")
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour l'école."""

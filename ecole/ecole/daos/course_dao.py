@@ -52,7 +52,7 @@ class CourseDao(Dao[Course]):
 
     def read_all(self) -> list[Course]:
         """Renvoit l'ensemble des cours
-           (ou None s'il n'a pu être trouvé)"""
+           (ou un tableau vide s'il n'a pas de cours)"""
         courses: list[Course] = []
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
@@ -98,5 +98,14 @@ class CourseDao(Dao[Course]):
         :param course: cours dont l'entité Course correspondante est à supprimer
         :return: True si la suppression a pu être réalisée
         """
-        ...
-        return True
+
+        with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql = "DELETE FROM course WHERE id_course = %s"
+            cursor.execute(sql, (course.id,))
+            Dao.connection.commit()
+
+            if cursor.rowcount > 0:
+                return True
+            else:
+                return False
+
