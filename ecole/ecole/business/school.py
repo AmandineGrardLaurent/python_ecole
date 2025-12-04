@@ -94,6 +94,15 @@ class School:
         teacher_dao: TeacherDao = TeacherDao()
         return teacher_dao.read_all()
 
+    @staticmethod
+    def delete_teacher(teacher: Teacher) -> None:
+        teacher_dao: TeacherDao = TeacherDao()
+        is_delete = teacher_dao.delete(teacher)
+        if is_delete:
+            print(f"Professeur {teacher.id} supprimé")
+        else:
+            print("Erreur lors de la suppression")
+
     # Address ---------------------------------------------------------------------
     @staticmethod
     def get_address_by_id(id_address: int) -> Optional[Address]:

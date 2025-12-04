@@ -28,30 +28,37 @@ class CourseDao(Dao[Course]):
         """Renvoit le cours correspondant à l'entité dont l'id est id_course
            (ou None s'il n'a pu être trouvé)"""
         course: Optional[Course]
-        
+
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-                SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
-                FROM teacher AS t
-                JOIN course AS c
+                SELECT c.name, c.start_date, c.end_date, c.id_course, 
+                p.first_name, p.last_name, p.age, 
+                t.hiring_date, t.id_teacher
+                FROM course AS c
+                LEFT JOIN teacher AS t
                 ON c.id_teacher=t.id_teacher
-                JOIN person AS p
+                LEFT JOIN person AS p
                 ON t.id_person=p.id_person
                 WHERE id_course = %s
             """
             cursor.execute(sql, (id_course,))
             record = cursor.fetchone()
-        if record is not None:
-            course = Course(record['name'],
-                            record['start_date'],
-                            record['end_date'])
-            course.teacher = Teacher(record['first_name'],
-                                     record['last_name'],
-                                     record['age'],
-                                     record['hiring_date'])
-            course.id = record['id_course']
+        if record is None:
+            return None
+        course = Course(record['name'],
+                        record['start_date'],
+                        record['end_date'])
+        course.id = record['id_course']
+
+        if record['id_teacher'] is not None:
+            teacher = Teacher(record['first_name'],
+                              record['last_name'],
+                              record['age'],
+                              record['hiring_date'])
+            teacher.id = record['id_teacher']
+            course.teacher = teacher
         else:
-            course = None
+            course.teacher = None
 
         return course
 
@@ -62,11 +69,13 @@ class CourseDao(Dao[Course]):
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-                SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
-                FROM teacher AS t
-                JOIN course AS c
+                SELECT c.name, c.start_date, c.end_date, c.id_course, 
+                p.first_name, p.last_name, p.age, 
+                t.hiring_date, t.id_teacher
+                FROM course AS c
+                LEFT JOIN teacher AS t
                 ON c.id_teacher=t.id_teacher
-                JOIN person AS p
+                LEFT JOIN person AS p
                 ON t.id_person=p.id_person
             """
             cursor.execute(sql)
@@ -74,19 +83,24 @@ class CourseDao(Dao[Course]):
 
         if not records:
             return []
-        else:
-            for record in records:
-                course = Course(record['name'],
-                                record['start_date'],
-                                record['end_date'])
-                course.id = record['id_course']
-                course.teacher = Teacher(record['first_name'],
-                                         record['last_name'],
-                                         record['age'],
-                                         record['hiring_date'])
 
-                courses.append(course)
-            return courses
+        for record in records:
+            course = Course(record['name'],
+                            record['start_date'],
+                            record['end_date'])
+            course.id = record['id_course']
+
+            if record['id_teacher'] is not None:
+                teacher = Teacher(record['first_name'],
+                                  record['last_name'],
+                                  record['age'],
+                                  record['hiring_date'])
+                teacher.id = record['id_teacher']
+                course.teacher = teacher
+            else:
+                course.teacher = None
+            courses.append(course)
+        return courses
 
     def update(self, course: Course) -> bool:
         """Met à jour en BD l'entité Course correspondant à course, pour y correspondre
@@ -108,7 +122,6 @@ class CourseDao(Dao[Course]):
             sql = "DELETE FROM course WHERE id_course = %s"
             cursor.execute(sql, (course.id,))
             Dao.connection.commit()
-
             if cursor.rowcount > 0:
                 return True
             else:

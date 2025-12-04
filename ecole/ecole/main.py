@@ -6,7 +6,19 @@ Application de gestion d'une école
 """
 
 from business.school import School
+from models.teacher import Teacher
 
+
+def display_list(items: list, title: str) -> None:
+    print(f"\n{title}")
+    print("-" * 40)
+    for item in items:
+        print(item)
+
+def display_item(item, title: str) -> None:
+    print(f"\n=== {title} ===")
+    print(item)
+    print("=" * (len(title) + 8))
 
 def main() -> None:
     """Programme principal."""
@@ -23,45 +35,33 @@ Bienvenue dans notre école
     # affichage de la liste des cours, leur enseignant et leurs élèves
     # school.display_courses_list()
 
-    # affichage d'un cours
-    print(school.get_course_by_id(1))
-    print(school.get_course_by_id(2))
-    print(school.get_course_by_id(5))
-    print(school.get_course_by_id(9))
+    #school.delete_course(school.get_all_courses()[0])
+    #school.delete_teacher(school.get_all_teachers()[0])
 
-    # affichage de la liste complète des cours
-    courses = school.get_all_courses()
-    for course in courses:
-        print(course)
+    # affichage d'un cours ----------------------------------------------------------------
+    display_item(school.get_course_by_id(4), "Affichage d'un cours")
 
-    #school.delete_course(courses[8])
+    # affichage de la liste complète des cours --------------------------------------------
+    display_list(school.get_all_courses(), "Affichage de la liste complète des cours")
 
-    # affichage d'un étudiant
-    print("-"*20)
-    print(school.get_student_by_id(1))
+    # affichage d'un étudiant -------------------------------------------------------------
+    display_item(school.get_student_by_id(2), "Affichage d'un étudiant")
 
-    # affichage de la liste complète des étudiants
-    students = school.get_all_students()
-    for student in students:
-        print(student)
+    # affichage de la liste complète des étudiants ----------------------------------------
+    display_list(school.get_all_students(), "Affichage de la liste complète des étudiants")
 
-    # affichage d'une adresse
-    print("-"*20)
-    print(school.get_address_by_id(1))
+    # affichage d'une adresse -------------------------------------------------------------
+    display_item(school.get_address_by_id(2), "Affichage d'une adresse")
 
     # affichage de la liste complète des étudiants
-    all_address = school.get_all_address()
-    for address in all_address:
-        print(address)
+    display_list(school.get_all_address(), "Affichage de la liste complète des adresses")
 
     # affichage d'un prof
-    print("-"*20)
-    print(school.get_teacher_by_id(1))
+    display_item(school.get_teacher_by_id(5), "Affichage d'un prof")
 
     # affichage de la liste complète des profs
-    teachers = school.get_all_teachers()
-    for teacher in teachers:
-        print(teacher)
+    display_list(school.get_all_teachers(), "Affichage de la liste complète des profs")
+
 
 if __name__ == '__main__':
     main()

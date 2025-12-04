@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `name` varchar(50) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `id_teacher` int NOT NULL,
+  `id_teacher` int NULL,
   PRIMARY KEY (`id_course`),
   KEY `id_teacher` (`id_teacher`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -196,7 +196,7 @@ INSERT INTO `teacher` (`id_teacher`, `hiring_date`, `id_person`) VALUES
 -- Contraintes pour la table `course`
 --
 ALTER TABLE `course`
-  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`id_teacher`) REFERENCES `teacher` (`id_teacher`);
+  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`id_teacher`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL;
 
 --
 -- Contraintes pour la table `person`
@@ -221,7 +221,7 @@ ALTER TABLE `takes`
 -- Contraintes pour la table `teacher`
 --
 ALTER TABLE `teacher`
-  ADD CONSTRAINT `teacher_ibfk_1` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`);
+  ADD CONSTRAINT `teacher_ibfk_1` FOREIGN KEY (`id_person`) REFERENCES `person` (`id_person`) ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

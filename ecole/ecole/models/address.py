@@ -13,8 +13,8 @@ class Address:
     """Adresse d'une personne (enseignant ou élève)."""
     id: Optional[int] = field(default=None, init=False)
     street: str
-    postal_code: int
     city: str
+    postal_code: int
 
     def __str__(self) -> str:
         return f"{self.street}, {self.postal_code}, {self.city}"

@@ -27,7 +27,7 @@ class TeacherDao(Dao[Teacher]):
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-                SELECT p.first_name, p.last_name, p.age, t.hiring_date
+                SELECT p.first_name, p.last_name, p.age, t.hiring_date, t.id_teacher
                 FROM teacher AS t
                 JOIN person AS p
                 ON t.id_person=p.id_person
@@ -40,6 +40,7 @@ class TeacherDao(Dao[Teacher]):
                               record['last_name'],
                               record['age'],
                               record['hiring_date'])
+            teacher.id = record['id_teacher']
         else:
             teacher = None
 
@@ -54,7 +55,8 @@ class TeacherDao(Dao[Teacher]):
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-                SELECT p.first_name, p.last_name, p.age, t.hiring_date
+                SELECT p.first_name, p.last_name, p.age, 
+                t.hiring_date, t.id_teacher
                 FROM teacher AS t
                 JOIN person AS p
                 ON t.id_person=p.id_person
@@ -70,8 +72,7 @@ class TeacherDao(Dao[Teacher]):
                                   record['last_name'],
                                   record['age'],
                                   record['hiring_date'])
-
-
+                teacher.id = record['id_teacher']
                 teachers.append(teacher)
             return teachers
 
@@ -80,5 +81,11 @@ class TeacherDao(Dao[Teacher]):
         return True
 
     def delete(self, teacher: Teacher) -> bool:
-        ...
-        return True
+        with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql = "DELETE FROM teacher WHERE id_teacher = %s"
+            cursor.execute(sql, (teacher.id,))
+            Dao.connection.commit()
+            if cursor.rowcount > 0:
+                return True
+            else:
+                return False
