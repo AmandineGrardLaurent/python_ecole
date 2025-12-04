@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional
 
+from daos.address_dao import AddressDao
 from daos.course_dao import CourseDao
 from daos.student_dao import StudentDao
 from models.address import Address
@@ -80,6 +81,17 @@ class School:
     def get_all_students() -> list[Student]:
         student_dao: StudentDao = StudentDao()
         return student_dao.read_all()
+
+    # Address ---------------------------------------------------------------------
+    @staticmethod
+    def get_address_by_id(id_address: int) -> Optional[Address]:
+        address_dao: AddressDao = AddressDao()
+        return address_dao.read(id_address)
+
+    @staticmethod
+    def get_all_address() -> list[Address]:
+        address_dao: AddressDao = AddressDao()
+        return address_dao.read_all()
 
     # Datas ------------------------------------------------------------------------
     def init_static(self) -> None:

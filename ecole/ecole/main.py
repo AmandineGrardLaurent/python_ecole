@@ -45,5 +45,15 @@ Bienvenue dans notre école
     for student in students:
         print(student)
 
+    # affichage d'une adresse
+    print("-"*20)
+    print(school.get_address_by_id(1))
+
+    # affichage de la liste complète des étudiants
+    all_address = school.get_all_address()
+    for address in all_address:
+        print(address)
+
+
 if __name__ == '__main__':
     main()
