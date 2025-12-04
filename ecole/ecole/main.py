@@ -23,6 +23,7 @@ Bienvenue dans notre école
     # affichage de la liste des cours, leur enseignant et leurs élèves
     # school.display_courses_list()
 
+    # affichage d'un cours
     print(school.get_course_by_id(1))
     print(school.get_course_by_id(2))
     print(school.get_course_by_id(5))
@@ -33,7 +34,16 @@ Bienvenue dans notre école
     for course in courses:
         print(course)
 
-    school.delete_course(courses[8])
+    #school.delete_course(courses[8])
+
+    # affichage d'un étudiant
+    print("-"*20)
+    print(school.get_student_by_id(1))
+
+    # affichage de la liste complète des étudiants
+    students = school.get_all_students()
+    for student in students:
+        print(student)
 
 if __name__ == '__main__':
     main()

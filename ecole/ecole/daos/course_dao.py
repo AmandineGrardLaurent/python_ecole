@@ -42,8 +42,13 @@ class CourseDao(Dao[Course]):
             cursor.execute(sql, (id_course,))
             record = cursor.fetchone()
         if record is not None:
-            course = Course(record['name'], record['start_date'], record['end_date'])
-            course.teacher = Teacher(record['first_name'], record['last_name'], record['age'], record['hiring_date'])
+            course = Course(record['name'],
+                            record['start_date'],
+                            record['end_date'])
+            course.teacher = Teacher(record['first_name'],
+                                     record['last_name'],
+                                     record['age'],
+                                     record['hiring_date'])
             course.id = record['id_course']
         else:
             course = None
@@ -51,7 +56,7 @@ class CourseDao(Dao[Course]):
         return course
 
     def read_all(self) -> list[Course]:
-        """Renvoit l'ensemble des cours
+        """Renvoit l'ensemble des cours sous forme de liste
            (ou un tableau vide s'il n'a pas de cours)"""
         courses: list[Course] = []
 
@@ -108,4 +113,3 @@ class CourseDao(Dao[Course]):
                 return True
             else:
                 return False
-

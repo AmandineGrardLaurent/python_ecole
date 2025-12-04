@@ -9,6 +9,7 @@ from datetime import date
 from typing import Optional
 
 from daos.course_dao import CourseDao
+from daos.student_dao import StudentDao
 from models.address import Address
 from models.course import Course
 from models.teacher import Teacher
@@ -49,6 +50,7 @@ class School:
                 print(f"- {student}")
             print()
 
+    # Courses ---------------------------------------------------------------------
     @staticmethod
     def get_course_by_id(id_course: int) -> Optional[Course]:
         course_dao: CourseDao = CourseDao()
@@ -68,6 +70,18 @@ class School:
         else:
             print("Erreur lors de la suppression")
 
+    # Students ---------------------------------------------------------------------
+    @staticmethod
+    def get_student_by_id(id_student: int) -> Optional[Student]:
+        student_dao: StudentDao = StudentDao()
+        return student_dao.read(id_student)
+
+    @staticmethod
+    def get_all_students() -> list[Student]:
+        student_dao: StudentDao = StudentDao()
+        return student_dao.read_all()
+
+    # Datas ------------------------------------------------------------------------
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour l'école."""
         
