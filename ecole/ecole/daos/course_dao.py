@@ -31,13 +31,13 @@ class CourseDao(Dao[Course]):
         
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-            SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
-            FROM teacher AS t
-            JOIN course AS c
-            ON c.id_teacher=t.id_teacher
-            JOIN person AS p
-            ON t.id_person=p.id_person
-            WHERE id_course = %s
+                SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
+                FROM teacher AS t
+                JOIN course AS c
+                ON c.id_teacher=t.id_teacher
+                JOIN person AS p
+                ON t.id_person=p.id_person
+                WHERE id_course = %s
             """
             cursor.execute(sql, (id_course,))
             record = cursor.fetchone()
@@ -62,12 +62,12 @@ class CourseDao(Dao[Course]):
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-            SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
-            FROM teacher AS t
-            JOIN course AS c
-            ON c.id_teacher=t.id_teacher
-            JOIN person AS p
-            ON t.id_person=p.id_person
+                SELECT c.name, c.start_date, c.end_date, c.id_course, p.first_name, p.last_name, p.age, t.hiring_date
+                FROM teacher AS t
+                JOIN course AS c
+                ON c.id_teacher=t.id_teacher
+                JOIN person AS p
+                ON t.id_person=p.id_person
             """
             cursor.execute(sql)
             records = cursor.fetchall()

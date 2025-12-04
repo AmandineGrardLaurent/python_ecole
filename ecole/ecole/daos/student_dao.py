@@ -24,17 +24,17 @@ class StudentDao(Dao[Student]):
         """
             Renvoit l'étudiant correspondant dont l'id_person est id_student
         """
-        course: Optional[Student]
+        student: Optional[Student]
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-            SELECT p.first_name, p.last_name, p.age, s.student_nbr, a.street, a.postal_code, a.city
-            FROM student AS s
-            JOIN person AS p
-            ON s.id_person=p.id_person
-            JOIN address AS a
-            ON a.id_address = p.id_address
-            WHERE p.id_person = %s;
+                SELECT p.first_name, p.last_name, p.age, s.student_nbr, a.street, a.postal_code, a.city
+                FROM student AS s
+                JOIN person AS p
+                ON s.id_person=p.id_person
+                JOIN address AS a
+                ON a.id_address = p.id_address
+                WHERE p.id_person = %s;
             """
             cursor.execute(sql, (id_student,))
             record = cursor.fetchone()
@@ -60,12 +60,12 @@ class StudentDao(Dao[Student]):
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """
-            SELECT p.first_name, p.last_name, p.age, s.student_nbr, a.street, a.postal_code, a.city
-            FROM student AS s
-            JOIN person AS p
-            ON s.id_person=p.id_person
-            JOIN address AS a
-            ON a.id_address = p.id_address
+                SELECT p.first_name, p.last_name, p.age, s.student_nbr, a.street, a.postal_code, a.city
+                FROM student AS s
+                JOIN person AS p
+                ON s.id_person=p.id_person
+                JOIN address AS a
+                ON a.id_address = p.id_address
             """
             cursor.execute(sql)
             records = cursor.fetchall()

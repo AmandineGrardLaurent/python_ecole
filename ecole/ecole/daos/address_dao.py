@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Classe Dao[Student]
+Classe Dao[Address]
 """
 import pymysql
 
@@ -23,7 +23,7 @@ class AddressDao(Dao[Address]):
         """
             Renvoit une adresse dont via l'id_address
         """
-        course: Optional[Address]
+        address: Optional[Address]
 
         with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
             sql = """

@@ -18,7 +18,7 @@ Bienvenue dans notre école
     school: School = School()
 
     # initialisation d'un ensemble de cours, enseignants et élèves composant l'école
-    school.init_static()
+    #school.init_static()
 
     # affichage de la liste des cours, leur enseignant et leurs élèves
     # school.display_courses_list()
@@ -54,6 +54,14 @@ Bienvenue dans notre école
     for address in all_address:
         print(address)
 
+    # affichage d'un prof
+    print("-"*20)
+    print(school.get_teacher_by_id(1))
+
+    # affichage de la liste complète des profs
+    teachers = school.get_all_teachers()
+    for teacher in teachers:
+        print(teacher)
 
 if __name__ == '__main__':
     main()

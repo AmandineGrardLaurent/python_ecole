@@ -11,6 +11,7 @@ from typing import Optional
 from daos.address_dao import AddressDao
 from daos.course_dao import CourseDao
 from daos.student_dao import StudentDao
+from daos.teacher_dao import TeacherDao
 from models.address import Address
 from models.course import Course
 from models.teacher import Teacher
@@ -81,6 +82,17 @@ class School:
     def get_all_students() -> list[Student]:
         student_dao: StudentDao = StudentDao()
         return student_dao.read_all()
+
+    # Teachers ---------------------------------------------------------------------
+    @staticmethod
+    def get_teacher_by_id(id_teacher: int) -> Optional[Teacher]:
+        teacher_dao: TeacherDao = TeacherDao()
+        return teacher_dao.read(id_teacher)
+
+    @staticmethod
+    def get_all_teachers() -> list[Teacher]:
+        teacher_dao: TeacherDao = TeacherDao()
+        return teacher_dao.read_all()
 
     # Address ---------------------------------------------------------------------
     @staticmethod
