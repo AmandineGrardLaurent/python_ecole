@@ -9,6 +9,7 @@ from daos.dao import Dao
 from dataclasses import dataclass
 from typing import Optional
 
+from models.course import Course
 from models.teacher import Teacher
 
 
@@ -45,6 +46,41 @@ class TeacherDao(Dao[Teacher]):
             teacher = None
 
         return teacher
+
+    def read_courses_teached(self, id_teacher: int) -> list[Course]:
+        courses: list[Course] = []
+        with Dao.connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql = """
+                SELECT c.name, c.start_date, c.end_date, c.id_course, 
+                t.id_teacher, t.hiring_date,
+                p.first_name, p.last_name, p.age
+                FROM course AS c
+                JOIN teacher AS t
+                ON c.id_teacher=t.id_teacher
+                JOIN person AS p
+                ON t.id_person = p.id_person
+                WHERE t.id_teacher = %s;
+            """
+            cursor.execute(sql, (id_teacher,))
+            records = cursor.fetchall()
+
+        if not records:
+            return []
+
+        for record in records:
+            course = Course(record['name'],
+                            record['start_date'],
+                            record['end_date'])
+            course.id = record['id_course']
+            teacher = Teacher(record['first_name'],
+                              record['last_name'],
+                              record['age'],
+                              record['hiring_date'])
+            teacher.id = record['id_teacher']
+            course.teacher = teacher
+
+            courses.append(course)
+        return courses
 
     def read_all(self) -> list[Teacher]:
         """

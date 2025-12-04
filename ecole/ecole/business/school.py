@@ -90,6 +90,11 @@ class School:
         return teacher_dao.read(id_teacher)
 
     @staticmethod
+    def get_teacher_courses(id_teacher: int) -> list[Course]:
+        teacher_dao: TeacherDao = TeacherDao()
+        return teacher_dao.read_courses_teached(id_teacher)
+
+    @staticmethod
     def get_all_teachers() -> list[Teacher]:
         teacher_dao: TeacherDao = TeacherDao()
         return teacher_dao.read_all()
